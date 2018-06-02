@@ -81,6 +81,9 @@ class SnakeView extends SurfaceView implements Runnable {
     private final int NUM_BLOCKS_WIDE = 40;
     private int m_NumBlocksHigh; // determined dynamically
 
+    //Control
+    private Control m_Control = Control.DUAL;
+    public enum Control {POV, DUAL, SPLIT}
 
 
     public SnakeView(Context context, Point size) {
@@ -176,6 +179,7 @@ class SnakeView extends SurfaceView implements Runnable {
             // Error
         }
     }
+
     public void spawnMouse() {
         Random random = new Random();
         m_MouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
@@ -192,6 +196,7 @@ class SnakeView extends SurfaceView implements Runnable {
         m_Score = m_Score + 1;
         m_SoundPool.play(m_get_mouse_sound, 1, 1, 0, 0, 1);
     }
+
     private void moveSnake(){
         // Move the body
         for (int i = m_SnakeLength; i > 0; i--) {
@@ -254,7 +259,7 @@ class SnakeView extends SurfaceView implements Runnable {
 
         if (detectDeath()) {
             //start again
-            m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
+            //m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
             startGame();
         }
@@ -295,6 +300,7 @@ class SnakeView extends SurfaceView implements Runnable {
             m_Holder.unlockCanvasAndPost(m_Canvas);
         }
     }
+
     public boolean checkForUpdate() {
 
         // Are we due to update the frame
@@ -315,6 +321,29 @@ class SnakeView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
+        moveSnake(motionEvent);
+
+        return true;
+    }
+
+    private void moveSnake(MotionEvent motionEvent)
+    {
+        switch (m_Control)
+        {
+            case POV:
+                moveSnakePOV(motionEvent);
+                break;
+            case DUAL:
+                moveSnakeDUAL(motionEvent);
+                break;
+            case SPLIT:
+            default:
+            break;
+        }
+    }
+
+    private void moveSnakePOV(MotionEvent motionEvent)
+    {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (motionEvent.getX() >= m_ScreenWidth / 2) {
@@ -349,7 +378,44 @@ class SnakeView extends SurfaceView implements Runnable {
                     }
                 }
         }
-        return true;
     }
 
+
+    private void moveSnakeDUAL(MotionEvent motionEvent)
+    {
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                if (motionEvent.getX() >= m_ScreenWidth / 2) {//clicked on the right side
+                    switch(m_Direction){
+                        case UP:
+                            m_Direction = Direction.RIGHT;
+                            break;
+                        case RIGHT:
+                            m_Direction = Direction.UP;
+                            break;
+                        case DOWN:
+                            m_Direction = Direction.RIGHT;
+                            break;
+                        case LEFT:
+                            m_Direction = Direction.UP;
+                            break;
+                    }
+                } else {
+                    switch(m_Direction){
+                        case UP:
+                            m_Direction = Direction.LEFT;
+                            break;
+                        case LEFT:
+                            m_Direction = Direction.DOWN;
+                            break;
+                        case DOWN:
+                            m_Direction = Direction.LEFT;
+                            break;
+                        case RIGHT:
+                            m_Direction = Direction.DOWN;
+                            break;
+                    }
+                }
+        }
+    }
 }
