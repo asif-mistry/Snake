@@ -11,7 +11,8 @@ import android.content.Context;
         import android.graphics.Color;
         import android.graphics.Paint;
         import android.graphics.Point;
-        import android.media.AudioManager;
+import android.graphics.Rect;
+import android.media.AudioManager;
         import android.media.SoundPool;
         import android.view.MotionEvent;
         import android.view.SurfaceHolder;
@@ -259,7 +260,7 @@ class SnakeView extends SurfaceView implements Runnable {
 
         if (detectDeath()) {
             //start again
-            //m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
+            m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
             startGame();
         }
@@ -271,7 +272,7 @@ class SnakeView extends SurfaceView implements Runnable {
             m_Canvas = m_Holder.lockCanvas();
 
             // Clear the screen with my favorite color
-            m_Canvas.drawColor(Color.argb(255, 120, 197, 87));
+            m_Canvas.drawColor(Color.argb(255, 0, 0, 0));
 
             // Set the color of the paint to draw the snake and mouse with
             m_Paint.setColor(Color.argb(255, 255, 255, 255));
@@ -279,6 +280,10 @@ class SnakeView extends SurfaceView implements Runnable {
             // Choose how big the score will be
             m_Paint.setTextSize(30);
             m_Canvas.drawText("Score:" + m_Score, 10, 30, m_Paint);
+
+            // Set the color of the paint to draw the snake and mouse with
+            m_Paint.setColor(Color.argb(255,  120, 197, 87));
+
 
             //Draw the snake
             for (int i = 0; i < m_SnakeLength; i++) {
@@ -296,6 +301,9 @@ class SnakeView extends SurfaceView implements Runnable {
                     (m_MouseY * m_BlockSize) + m_BlockSize,
                     m_Paint);
 
+            // Set the color of the paint to draw the snake and mouse with
+            m_Paint.setColor(Color.argb(255, 255, 255, 255));
+            m_Canvas.drawLine(0.0f,(float)m_NumBlocksHigh*m_BlockSize,(float)m_ScreenWidth,(float)(m_NumBlocksHigh*m_BlockSize)+1,m_Paint);
             // Draw the whole frame
             m_Holder.unlockCanvasAndPost(m_Canvas);
         }
