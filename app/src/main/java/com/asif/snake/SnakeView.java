@@ -6,6 +6,7 @@ package com.asif.snake;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
         import android.content.res.AssetManager;
         import android.graphics.Canvas;
@@ -21,7 +22,7 @@ import android.media.AudioManager;
         import java.io.IOException;
         import java.util.Random;
 
-class SnakeView extends SurfaceView implements Runnable {
+public class SnakeView extends SurfaceView implements Runnable {
 
     // All the code will run separately to the UI
     private Thread m_Thread = null;
@@ -88,10 +89,12 @@ class SnakeView extends SurfaceView implements Runnable {
     public enum Control {POV, DUAL, SPLIT}
 
 
+    public SharedPreferences preferences;
     public SnakeView(Context context, Point size) {
         super(context);
 
         m_context = context;
+        preferences = m_context.getSharedPreferences("SnakePreferences", Context.MODE_PRIVATE);
 
         m_ScreenWidth = size.x;
         m_ScreenHeight = size.y;
@@ -261,8 +264,10 @@ class SnakeView extends SurfaceView implements Runnable {
         moveSnake();
 
         if (detectDeath()) {
+            updateHighScore();
             //start again
             m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
+
 
             Intent intent = new Intent(m_context,SettingActivity.class);
             m_context.startActivity(intent);
@@ -284,6 +289,9 @@ class SnakeView extends SurfaceView implements Runnable {
             // Choose how big the score will be
             m_Paint.setTextSize(30);
             m_Canvas.drawText("Score:" + m_Score, 10, 30, m_Paint);
+
+            int highScore = preferences.getInt("HighScore", 0);
+            m_Canvas.drawText("High Score:" + highScore, m_ScreenWidth/2, 30, m_Paint);
 
             // Set the color of the paint to draw the snake and mouse with
             m_Paint.setColor(Color.argb(255,  120, 197, 87));
@@ -430,4 +438,18 @@ class SnakeView extends SurfaceView implements Runnable {
                 }
         }
     }
+
+    public void updateHighScore()
+    {
+        int highScore = preferences.getInt("HighScore", 0);
+
+        if(m_Score > highScore)
+        {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("HighScore", m_Score);
+            editor.apply();
+
+        }
+    }
+
 }
