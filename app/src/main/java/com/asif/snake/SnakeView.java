@@ -5,7 +5,8 @@ package com.asif.snake;
  */
 
 import android.content.Context;
-        import android.content.res.AssetFileDescriptor;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
         import android.content.res.AssetManager;
         import android.graphics.Canvas;
         import android.graphics.Color;
@@ -107,9 +108,10 @@ class SnakeView extends SurfaceView implements Runnable {
         m_Holder = getHolder();
         m_Paint = new Paint();
 
-        // If you score 200 you are rewarded with a crash achievement!
-        m_SnakeXs = new int[200];
-        m_SnakeYs = new int[200];
+        int arraySize = NUM_BLOCKS_WIDE * m_NumBlocksHigh;
+
+        m_SnakeXs = new int[arraySize];
+        m_SnakeYs = new int[arraySize];
 
         // Start the game
         startGame();
@@ -262,7 +264,9 @@ class SnakeView extends SurfaceView implements Runnable {
             //start again
             m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
-            startGame();
+            Intent intent = new Intent(m_context,SettingActivity.class);
+            m_context.startActivity(intent);
+            //startGame();
         }
     }
 
