@@ -201,6 +201,8 @@ public class SnakeView extends SurfaceView implements Runnable {
         //add to the m_Score
         m_Score = m_Score + 1;
         m_SoundPool.play(m_get_mouse_sound, 1, 1, 0, 0, 1);
+
+        updateHighScore();
     }
 
     private void moveSnake(){
@@ -264,14 +266,13 @@ public class SnakeView extends SurfaceView implements Runnable {
         moveSnake();
 
         if (detectDeath()) {
-            updateHighScore();
             //start again
             m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
 
             Intent intent = new Intent(m_context,SettingActivity.class);
-            m_context.startActivity(intent);
-            //startGame();
+//            m_context.startActivity(intent);
+            startGame();
         }
     }
 
@@ -448,7 +449,6 @@ public class SnakeView extends SurfaceView implements Runnable {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("HighScore", m_Score);
             editor.apply();
-
         }
     }
 
