@@ -12,14 +12,23 @@ public class SettingActivity extends Activity {
 
 
     //Control
-    private AppConstants.Control m_Control = AppConstants.Control.DUAL;
+    private AppConstants.Control m_Control;
+    Button newGameButton;
+    Button controlButton;
+    RadioButton povButton;
+    RadioButton dualButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        final Button newGameButton = (Button) findViewById(R.id.newGameButton);
+        m_Control = AppConstants.Control.DUAL;
+        newGameButton = (Button) findViewById(R.id.newGameButton);
+        controlButton = (Button) findViewById(R.id.controlButton);
+        povButton = (RadioButton) findViewById(R.id.povRadio);
+        dualButton = (RadioButton) findViewById(R.id.dualRadio);
+
         newGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 newGameButtonClicked();
@@ -27,14 +36,12 @@ public class SettingActivity extends Activity {
         });
 
 
-        final Button controlButton = (Button) findViewById(R.id.controlButton);
         controlButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 controlButtonClicked();
             }
         });
 
-        final RadioButton povButton = (RadioButton) findViewById(R.id.povRadio);
         povButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 povControlRadioClicked();
@@ -43,12 +50,12 @@ public class SettingActivity extends Activity {
 
 
 
-        final RadioButton dualButton = (RadioButton) findViewById(R.id.dualRadio);
         dualButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dualControlRadioClicked();
             }
         });
+        dualButton.toggle();
 
 
     }
@@ -70,11 +77,11 @@ public class SettingActivity extends Activity {
     {
         if(m_Control == AppConstants.Control.DUAL)
         {
-            m_Control = AppConstants.Control.POV;
+            povControlRadioClicked();
         }
         else
         {
-            m_Control = AppConstants.Control.DUAL;
+            dualControlRadioClicked();
         }
 
     }
@@ -83,6 +90,8 @@ public class SettingActivity extends Activity {
     public void povControlRadioClicked()
     {
         m_Control = AppConstants.Control.POV;
+        povButton.setChecked(true);
+        dualButton.setChecked(false);
 
     }
 
@@ -90,6 +99,8 @@ public class SettingActivity extends Activity {
     public void dualControlRadioClicked()
     {
         m_Control = AppConstants.Control.DUAL;
+        dualButton.setChecked(true);
+        povButton.setChecked(false);
 
     }
 
