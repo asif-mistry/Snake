@@ -1,5 +1,6 @@
 package com.asif.snake;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Point;
@@ -22,11 +23,16 @@ public class SnakeActivity extends Activity {
         Point size = new Point();
         display.getSize(size);
 
+        Intent intent = getIntent();
+
+        AppConstants.Control result = (AppConstants.Control) intent.getSerializableExtra(AppConstants.CONTROL_KEY);
         // Create a new View based on the SnakeView class
         snakeView = new SnakeView(this, size);
+        snakeView.setControl(result);
 
         // Make snakeView the default view of the Activity
         setContentView(snakeView);
+        snakeView.startGame();
     }
 
 

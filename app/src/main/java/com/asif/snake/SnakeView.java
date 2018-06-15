@@ -21,6 +21,7 @@ import android.media.AudioManager;
         import android.view.SurfaceView;
         import java.io.IOException;
         import java.util.Random;
+        import com.asif.snake.AppConstants;
 
 public class SnakeView extends SurfaceView implements Runnable {
 
@@ -85,8 +86,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     private int m_NumBlocksHigh; // determined dynamically
 
     //Control
-    private Control m_Control = Control.DUAL;
-    public enum Control {POV, DUAL, SPLIT}
+    private AppConstants.Control m_Control = AppConstants.Control.DUAL;
 
 
     public SharedPreferences preferences;
@@ -117,7 +117,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         m_SnakeYs = new int[arraySize];
 
         // Start the game
-        startGame();
+        //startGame();
     }
 
     @Override
@@ -271,8 +271,8 @@ public class SnakeView extends SurfaceView implements Runnable {
 
 
             Intent intent = new Intent(m_context,SettingActivity.class);
-//            m_context.startActivity(intent);
-            startGame();
+            m_context.startActivity(intent);
+            //startGame();
         }
     }
 
@@ -450,6 +450,11 @@ public class SnakeView extends SurfaceView implements Runnable {
             editor.putInt("HighScore", m_Score);
             editor.apply();
         }
+    }
+
+    public void setControl(AppConstants.Control control)
+    {
+        m_Control = control;
     }
 
 }
