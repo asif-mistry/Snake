@@ -299,7 +299,7 @@ public class SnakeView extends SurfaceView implements Runnable {
             int highScore = preferences.getInt("HighScore", 0);
             m_Canvas.drawText("High Score:" + highScore, m_ScreenWidth/2, 30, m_Paint);
 
-            // Set the color of the paint to draw the snake and mouse with
+            // Set the color of the paint to draw the snake with
             m_Paint.setColor(Color.argb(255,  120, 197, 87));
 
 
@@ -312,12 +312,18 @@ public class SnakeView extends SurfaceView implements Runnable {
                         m_Paint);
             }
 
+            // Set the color of the paint to draw the  mouse with
+            m_Paint.setColor(Color.argb(255,  255, 0, 0));
             //draw the mouse
-            m_Canvas.drawRect(m_MouseX * m_BlockSize,
-                    (m_MouseY * m_BlockSize),
-                    (m_MouseX * m_BlockSize) + m_BlockSize,
-                    (m_MouseY * m_BlockSize) + m_BlockSize,
-                    m_Paint);
+//            m_Canvas.drawRect(m_MouseX * m_BlockSize,
+//                    (m_MouseY * m_BlockSize),
+//                    (m_MouseX * m_BlockSize) + m_BlockSize,
+//                    (m_MouseY * m_BlockSize) + m_BlockSize,
+//                    m_Paint);
+
+            float size = m_BlockSize/2;
+            m_Canvas.drawCircle((m_MouseX*m_BlockSize)+size,(m_MouseY*m_BlockSize)+size,size,m_Paint);
+
 
             // Set the color of the paint to draw the snake and mouse with
             m_Paint.setColor(Color.argb(255, 255, 255, 255));
