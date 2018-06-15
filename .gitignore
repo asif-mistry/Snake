@@ -1,5 +1,6 @@
 
 # Created by https://www.gitignore.io/api/java,macos,android,windows,intellij,androidstudio
+local.properties
 
 ### Android ###
 # Built application files
@@ -87,6 +88,8 @@ obj/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/codeStyleSettings.xml
+
 
 # OS-specific files
 .DS_Store
