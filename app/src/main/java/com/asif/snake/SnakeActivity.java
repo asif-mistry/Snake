@@ -25,10 +25,12 @@ public class SnakeActivity extends Activity {
 
         Intent intent = getIntent();
 
-        AppConstants.Control result = (AppConstants.Control) intent.getSerializableExtra(AppConstants.CONTROL_KEY);
+        AppConstants.Control control = (AppConstants.Control) intent.getSerializableExtra(AppConstants.CONTROL_KEY);
+        Boolean soundPref =  intent.getBooleanExtra(com.asif.snake.AppConstants.SOUND_KEY,true);
         // Create a new View based on the SnakeView class
         snakeView = new SnakeView(this, size);
-        snakeView.setControl(result);
+        snakeView.setControl(control);
+        snakeView.isSoundEnabled = soundPref;
 
         // Make snakeView the default view of the Activity
         setContentView(snakeView);

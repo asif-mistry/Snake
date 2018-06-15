@@ -89,6 +89,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     private AppConstants.Control m_Control = AppConstants.Control.DUAL;
 
 
+    Boolean isSoundEnabled = true;
+
     public SharedPreferences preferences;
     public SnakeView(Context context, Point size) {
         super(context);
@@ -200,7 +202,8 @@ public class SnakeView extends SurfaceView implements Runnable {
         spawnMouse();
         //add to the m_Score
         m_Score = m_Score + 1;
-        m_SoundPool.play(m_get_mouse_sound, 1, 1, 0, 0, 1);
+        if(isSoundEnabled)
+            m_SoundPool.play(m_get_mouse_sound, 1, 1, 0, 0, 1);
 
         updateHighScore();
     }
@@ -267,7 +270,9 @@ public class SnakeView extends SurfaceView implements Runnable {
 
         if (detectDeath()) {
             //start again
-            m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
+
+            if(isSoundEnabled)
+                m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
 
             Intent intent = new Intent(m_context,SettingActivity.class);

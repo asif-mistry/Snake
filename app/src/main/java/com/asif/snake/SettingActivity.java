@@ -18,6 +18,12 @@ public class SettingActivity extends Activity {
     RadioButton povButton;
     RadioButton dualButton;
 
+    Button soundButton;
+    RadioButton soundOnButton;
+    RadioButton soundOffButton;
+
+    Boolean isSoundEnabled = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +34,10 @@ public class SettingActivity extends Activity {
         controlButton = (Button) findViewById(R.id.controlButton);
         povButton = (RadioButton) findViewById(R.id.povRadio);
         dualButton = (RadioButton) findViewById(R.id.dualRadio);
+
+        soundButton = (Button) findViewById(com.asif.snake.R.id.soundButton);
+        soundOnButton = (RadioButton) findViewById(com.asif.snake.R.id.soundOnRadio);
+        soundOffButton = (RadioButton) findViewById(com.asif.snake.R.id.soundOffRadio);
 
         newGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -41,15 +51,11 @@ public class SettingActivity extends Activity {
                 controlButtonClicked();
             }
         });
-
         povButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 povControlRadioClicked();
             }
         });
-
-
-
         dualButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dualControlRadioClicked();
@@ -58,6 +64,22 @@ public class SettingActivity extends Activity {
         dualButton.toggle();
 
 
+        soundButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                soundButtonClicked();
+            }
+        });
+        soundOnButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                soundOnRadioClicked();
+            }
+        });
+        soundOffButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                soundOffRadioClicked();
+            }
+        });
+        soundOnButton.toggle();
     }
 
 
@@ -69,10 +91,12 @@ public class SettingActivity extends Activity {
 
         Intent myIntent = new Intent(SettingActivity.this, SnakeActivity.class);
         myIntent.putExtra(AppConstants.CONTROL_KEY,m_Control);
+        myIntent.putExtra(com.asif.snake.AppConstants.SOUND_KEY,isSoundEnabled);
         SettingActivity.this.startActivity(myIntent);
     }
 
 
+    //region control
     public void controlButtonClicked()
     {
         if(m_Control == AppConstants.Control.DUAL)
@@ -92,7 +116,6 @@ public class SettingActivity extends Activity {
         m_Control = AppConstants.Control.POV;
         povButton.setChecked(true);
         dualButton.setChecked(false);
-
     }
 
 
@@ -101,7 +124,38 @@ public class SettingActivity extends Activity {
         m_Control = AppConstants.Control.DUAL;
         dualButton.setChecked(true);
         povButton.setChecked(false);
+    }
+    //endregion
+
+
+    //region control
+    public void soundButtonClicked()
+    {
+        if(isSoundEnabled == false)
+        {
+            soundOnRadioClicked();
+        }
+        else
+        {
+            soundOffRadioClicked();
+        }
 
     }
 
+
+    public void soundOnRadioClicked()
+    {
+        isSoundEnabled = true;
+        soundOnButton.setChecked(true);
+        soundOffButton.setChecked(false);
+    }
+
+
+    public void soundOffRadioClicked()
+    {
+        isSoundEnabled = false;
+        soundOffButton.setChecked(true);
+        soundOnButton.setChecked(false);
+    }
+    //endregion
 }

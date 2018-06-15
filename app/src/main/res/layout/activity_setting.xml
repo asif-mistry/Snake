@@ -14,10 +14,9 @@
 
         android:text="Pov"
         app:layout_constraintBottom_toBottomOf="@+id/controlButton"
-        app:layout_constraintStart_toEndOf="@+id/controlButton"
-        app:layout_constraintTop_toTopOf="@+id/controlButton"
         app:layout_constraintEnd_toStartOf="@+id/dualRadio"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toEndOf="@+id/controlButton"
+        app:layout_constraintTop_toTopOf="@+id/controlButton" />
 
     <RadioButton
         android:id="@+id/dualRadio"
@@ -34,20 +33,53 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="New Game"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.110000014" />
 
     <Button
         android:id="@+id/controlButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Control :"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/newGameButton"
-        app:layout_constraintStart_toStartOf="@+id/newGameButton"
+        app:layout_constraintBottom_toTopOf="@+id/soundButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newGameButton" />
+
+    <Button
+        android:id="@+id/soundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sound :"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/controlButton"
+        app:layout_constraintTop_toBottomOf="@+id/controlButton" />
+
+    <RadioButton
+        android:id="@+id/soundOnRadio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="On"
+        app:layout_constraintBottom_toBottomOf="@+id/soundButton"
+        app:layout_constraintStart_toEndOf="@+id/soundButton"
+        app:layout_constraintTop_toTopOf="@+id/soundButton"
+        app:layout_constraintEnd_toStartOf="@+id/soundOffRadio" />
+
+    <RadioButton
+        android:id="@+id/soundOffRadio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Off"
+        app:layout_constraintBottom_toBottomOf="@+id/soundOnRadio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/soundOnRadio"
+        app:layout_constraintTop_toTopOf="@+id/soundOnRadio" />
+
 
 </android.support.constraint.ConstraintLayout>
