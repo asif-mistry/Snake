@@ -289,30 +289,8 @@ public class SnakeView extends SurfaceView implements Runnable {
             // Clear the screen with my favorite color
             m_Canvas.drawColor(Color.argb(255, 0, 0, 0));
 
-            // Set the color of the paint to draw the snake and mouse with
-            m_Paint.setColor(Color.argb(255, 255, 255, 255));
 
-            // Choose how big the score will be
-            m_Paint.setTextSize(30);
-            m_Canvas.drawText("Score:" + m_Score, 10, 30, m_Paint);
-
-            int highScore = preferences.getInt("HighScore", 0);
-            m_Canvas.drawText("High Score:" + highScore, m_ScreenWidth/2, 30, m_Paint);
-
-            // Set the color of the paint to draw the snake with
-            m_Paint.setColor(Color.argb(255,  120, 197, 87));
-
-
-            //Draw the snake
-            for (int i = 0; i < m_SnakeLength; i++) {
-                m_Canvas.drawRect(m_SnakeXs[i] * m_BlockSize,
-                        (m_SnakeYs[i] * m_BlockSize),
-                        (m_SnakeXs[i] * m_BlockSize) + m_BlockSize,
-                        (m_SnakeYs[i] * m_BlockSize) + m_BlockSize,
-                        m_Paint);
-            }
-
-            // Set the color of the paint to draw the  mouse with
+            //Apple color
             m_Paint.setColor(Color.argb(255,  255, 0, 0));
             //draw the mouse
 //            m_Canvas.drawRect(m_MouseX * m_BlockSize,
@@ -325,9 +303,30 @@ public class SnakeView extends SurfaceView implements Runnable {
             m_Canvas.drawCircle((m_MouseX*m_BlockSize)+size,(m_MouseY*m_BlockSize)+size,size,m_Paint);
 
 
-            // Set the color of the paint to draw the snake and mouse with
+
+            // Set the color of the paint to draw the snake with
+            m_Paint.setColor(Color.argb(255,  120, 197, 87));
+            //Draw the snake
+            for (int i = 0; i < m_SnakeLength; i++) {
+                m_Canvas.drawRect(m_SnakeXs[i] * m_BlockSize,
+                        (m_SnakeYs[i] * m_BlockSize),
+                        (m_SnakeXs[i] * m_BlockSize) + m_BlockSize,
+                        (m_SnakeYs[i] * m_BlockSize) + m_BlockSize,
+                        m_Paint);
+            }
+
+            //Text color
             m_Paint.setColor(Color.argb(255, 255, 255, 255));
+
+            // Choose how big the score will be
+            m_Paint.setTextSize(30);
+            m_Canvas.drawText("Score:" + m_Score, 10, 30, m_Paint);
+
+            int highScore = preferences.getInt("HighScore", 0);
+            m_Canvas.drawText("High Score:" + highScore, m_ScreenWidth/2, 30, m_Paint);
+
             m_Canvas.drawLine(0.0f,(float)m_NumBlocksHigh*m_BlockSize,(float)m_ScreenWidth,(float)(m_NumBlocksHigh*m_BlockSize)+1,m_Paint);
+
             // Draw the whole frame
             m_Holder.unlockCanvasAndPost(m_Canvas);
         }
@@ -350,6 +349,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         return false;
     }
 
+    //<editor-fold desc="Movement">
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
@@ -411,8 +411,6 @@ public class SnakeView extends SurfaceView implements Runnable {
                 }
         }
     }
-
-
     private void moveSnakeDUAL(MotionEvent motionEvent)
     {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
@@ -450,6 +448,7 @@ public class SnakeView extends SurfaceView implements Runnable {
                 }
         }
     }
+    //</editor-fold>
 
     public void updateHighScore()
     {
