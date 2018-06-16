@@ -79,11 +79,11 @@ public class SnakeView extends SurfaceView implements Runnable {
     private int m_MouseY;
 
     // The size in pixels of a snake segment
-    private int m_BlockSize;
+    private int m_BlockSize;// 48 for 16:9 screen
 
     // The size in segments of the playable area
     private final int NUM_BLOCKS_WIDE = 40;
-    private int m_NumBlocksHigh; // determined dynamically
+    private int m_NumBlocksHigh; // determined dynamically 22 for 16:9 screen
 
     //Control
     private AppConstants.Control m_Control = AppConstants.Control.DUAL;
@@ -274,9 +274,10 @@ public class SnakeView extends SurfaceView implements Runnable {
             if(isSoundEnabled)
                 m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
+            ((com.asif.snake.SnakeActivity) m_context).finish();
 
-            Intent intent = new Intent(m_context,SettingActivity.class);
-            m_context.startActivity(intent);
+//            Intent intent = new Intent(m_context,SettingActivity.class);
+//            m_context.startActivity(intent);
             //startGame();
         }
     }
