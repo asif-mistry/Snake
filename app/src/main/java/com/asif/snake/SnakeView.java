@@ -5,23 +5,18 @@ package com.asif.snake;
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
-        import android.content.res.AssetManager;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.Point;
-import android.graphics.Rect;
+import android.content.res.AssetManager;
+import android.graphics.*;
 import android.media.AudioManager;
-        import android.media.SoundPool;
-        import android.view.MotionEvent;
-        import android.view.SurfaceHolder;
-        import android.view.SurfaceView;
-        import java.io.IOException;
-        import java.util.Random;
-        import com.asif.snake.AppConstants;
+import android.media.SoundPool;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import java.io.IOException;
+import java.util.Random;
+import com.asif.snake.AppConstants.*;
 
 public class SnakeView extends SurfaceView implements Runnable {
 
@@ -126,6 +121,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     public void run() {
         // The check for m_Playing prevents a crash at the start
         // You could also extend the code to provide a pause feature
+
         while (m_Playing) {
 
             // Update 10 times a second
@@ -192,6 +188,14 @@ public class SnakeView extends SurfaceView implements Runnable {
         Random random = new Random();
         m_MouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         m_MouseY = random.nextInt(m_NumBlocksHigh - 1) + 1;
+
+        // spawned in snake
+        for (int i = m_SnakeLength - 1; i > 0; i--) {
+            if ((i > 4) && (m_MouseX == m_SnakeXs[i]) && (m_MouseY == m_SnakeYs[i])) {
+                spawnMouse();
+            }
+        }
+
     }
 
     private void eatMouse(){
@@ -276,9 +280,6 @@ public class SnakeView extends SurfaceView implements Runnable {
 
             ((com.asif.snake.SnakeActivity) m_context).finish();
 
-//            Intent intent = new Intent(m_context,SettingActivity.class);
-//            m_context.startActivity(intent);
-            //startGame();
         }
     }
 
@@ -289,6 +290,9 @@ public class SnakeView extends SurfaceView implements Runnable {
 
             // Clear the screen with my favorite color
             m_Canvas.drawColor(Color.argb(255, 0, 0, 0));
+
+
+            drawControl();
 
 
             //Apple color
@@ -330,6 +334,7 @@ public class SnakeView extends SurfaceView implements Runnable {
 
             // Draw the whole frame
             m_Holder.unlockCanvasAndPost(m_Canvas);
+
         }
     }
 
@@ -467,5 +472,93 @@ public class SnakeView extends SurfaceView implements Runnable {
     {
         m_Control = control;
     }
+
+    public void drawControl()
+    {
+        int x = m_ScreenWidth/4;
+        int y = m_ScreenHeight/2;
+
+        int width = m_BlockSize*4;
+
+        if(m_Control == Control.POV)
+        {
+            if(m_Direction ==  Direction.LEFT || m_Direction == Direction.RIGHT)
+            {
+                drawTriangleUp(m_Canvas,m_Paint,x,y,width);
+                drawTriangleDown(m_Canvas,m_Paint,x*3,y,width);
+            }
+            else
+            {
+                drawTriangleLeft(m_Canvas,m_Paint,x,y,width);
+                drawTriangleRight(m_Canvas,m_Paint,x*3,y,width);
+            }
+        }
+        else
+        {
+            if(m_Direction ==  Direction.LEFT || m_Direction == Direction.RIGHT)
+            {
+                drawTriangleDown(m_Canvas,m_Paint,x,y,width);
+                drawTriangleUp(m_Canvas,m_Paint,x*3,y,width);
+            }
+            else
+            {
+                drawTriangleLeft(m_Canvas,m_Paint,x,y,width);
+                drawTriangleRight(m_Canvas,m_Paint,x*3,y,width);
+            }
+        }
+
+    }
+
+
+    //<editor-fold desc="Triangle Drawing">
+    public void drawTriangleUp(Canvas canvas, Paint m_Paint, int x, int y, int width) {
+        int halfWidth = width / 2;
+
+        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
+        Path path = new Path();
+        path.moveTo(x, y - halfWidth);
+        path.lineTo(x - halfWidth, y + halfWidth); 
+        path.lineTo(x + halfWidth, y + halfWidth);
+        path.lineTo(x, y - halfWidth); 
+        path.close();
+        canvas.drawPath(path, m_Paint);
+    }
+    public void drawTriangleDown(Canvas canvas, Paint m_Paint, int x, int y, int width) {
+        int halfWidth = width / 2;
+
+        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
+        Path path = new Path();
+        path.moveTo(x, y + halfWidth);
+        path.lineTo(x - halfWidth, y - halfWidth); 
+        path.lineTo(x + halfWidth, y - halfWidth);
+        path.lineTo(x, y + halfWidth); 
+        path.close();
+        canvas.drawPath(path, m_Paint);
+    }
+    public void drawTriangleLeft(Canvas canvas, Paint m_Paint, int x, int y, int width) {
+        int halfWidth = width / 2;
+
+        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
+        Path path = new Path();
+        path.moveTo(x - halfWidth, y);
+        path.lineTo(x + halfWidth, y + halfWidth); 
+        path.lineTo(x + halfWidth, y - halfWidth);
+        path.lineTo(x - halfWidth, y); 
+        path.close();
+        canvas.drawPath(path, m_Paint);
+    }
+    public void drawTriangleRight(Canvas canvas, Paint m_Paint, int x, int y, int width) {
+        int halfWidth = width / 2;
+
+        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
+        Path path = new Path();
+        path.moveTo(x + halfWidth, y );
+        path.lineTo(x - halfWidth, y + halfWidth); 
+        path.lineTo(x - halfWidth, y - halfWidth);
+        path.lineTo(x + halfWidth, y); 
+        path.close();
+        canvas.drawPath(path, m_Paint);
+    }
+    //</editor-fold>
 
 }
