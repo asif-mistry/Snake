@@ -16,7 +16,7 @@ You tap on left side of screen to turn left.
 
 ### Dual
 
-This control uses left tap to move snake in West and South direction and right tap to move snake to North and East  direction.
+This control uses left tap to move snake in West and South direction i.e.(left and down) and right tap to move snake to North and East  direction i.e.(right and up).
 
 For eg. If snake is moving West then tapping left will move the snake to South. If snake is moving North then tapping left will move the snake to West. 
 
