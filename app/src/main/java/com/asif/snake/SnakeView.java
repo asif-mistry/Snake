@@ -4,19 +4,17 @@ package com.asif.snake;
  * Created by asif on 3-6-18.
  */
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
+import android.content.*;
+import android.content.res.*;
 import android.graphics.*;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import java.io.IOException;
-import java.util.Random;
+import android.media.*;
+import android.view.*;
+
 import com.asif.snake.AppConstants.*;
+import com.asif.snake.SnakeHelper.*;
+
+import java.io.*;
+import java.util.*;
 
 public class SnakeView extends SurfaceView implements Runnable {
 
@@ -42,8 +40,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     private int m_get_mouse_sound = -1;
     private int m_dead_sound = -1;
 
-    // For tracking movement m_Direction
-    public enum Direction {UP, RIGHT, DOWN, LEFT}
     // Start by heading to the right
     private Direction m_Direction = Direction.RIGHT;
 
@@ -83,6 +79,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     //Control
     private AppConstants.Control m_Control = AppConstants.Control.DUAL;
 
+    DrawControl m_DrawControl = new DrawControl();
+    SnakeMovement m_SnakeMovement = new SnakeMovement();
 
     Boolean isSoundEnabled = true;
 
@@ -292,7 +290,7 @@ public class SnakeView extends SurfaceView implements Runnable {
             m_Canvas.drawColor(Color.argb(255, 0, 0, 0));
 
 
-            drawControl();
+            m_DrawControl.drawControl(m_Canvas,m_Control, m_Paint,m_ScreenWidth,m_ScreenHeight,m_BlockSize,m_Direction);
 
 
             //Apple color
@@ -359,101 +357,12 @@ public class SnakeView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
-        moveSnake(motionEvent);
 
+        m_Direction = m_SnakeMovement.moveSnake(motionEvent,m_Control,m_Direction,m_ScreenWidth);
         return true;
     }
 
-    private void moveSnake(MotionEvent motionEvent)
-    {
-        switch (m_Control)
-        {
-            case POV:
-                moveSnakePOV(motionEvent);
-                break;
-            case DUAL:
-                moveSnakeDUAL(motionEvent);
-                break;
-            case SPLIT:
-            default:
-            break;
-        }
-    }
 
-    private void moveSnakePOV(MotionEvent motionEvent)
-    {
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= m_ScreenWidth / 2) {
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            m_Direction = Direction.DOWN;
-                            break;
-                        case DOWN:
-                            m_Direction = Direction.LEFT;
-                            break;
-                        case LEFT:
-                            m_Direction = Direction.UP;
-                            break;
-                    }
-                } else {
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = Direction.LEFT;
-                            break;
-                        case LEFT:
-                            m_Direction = Direction.DOWN;
-                            break;
-                        case DOWN:
-                            m_Direction = Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            m_Direction = Direction.UP;
-                            break;
-                    }
-                }
-        }
-    }
-    private void moveSnakeDUAL(MotionEvent motionEvent)
-    {
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= m_ScreenWidth / 2) {//clicked on the right side
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            m_Direction = Direction.UP;
-                            break;
-                        case DOWN:
-                            m_Direction = Direction.RIGHT;
-                            break;
-                        case LEFT:
-                            m_Direction = Direction.UP;
-                            break;
-                    }
-                } else {
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = Direction.LEFT;
-                            break;
-                        case LEFT:
-                            m_Direction = Direction.DOWN;
-                            break;
-                        case DOWN:
-                            m_Direction = Direction.LEFT;
-                            break;
-                        case RIGHT:
-                            m_Direction = Direction.DOWN;
-                            break;
-                    }
-                }
-        }
-    }
     //</editor-fold>
 
     public void updateHighScore()
@@ -468,97 +377,11 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
-    public void setControl(AppConstants.Control control)
+    public void setControl(Control control)
     {
         m_Control = control;
     }
 
-    public void drawControl()
-    {
-        int x = m_ScreenWidth/4;
-        int y = m_ScreenHeight/2;
-
-        int width = m_BlockSize*4;
-
-        if(m_Control == Control.POV)
-        {
-            if(m_Direction ==  Direction.LEFT || m_Direction == Direction.RIGHT)
-            {
-                drawTriangleUp(m_Canvas,m_Paint,x,y,width);
-                drawTriangleDown(m_Canvas,m_Paint,x*3,y,width);
-            }
-            else
-            {
-                drawTriangleLeft(m_Canvas,m_Paint,x,y,width);
-                drawTriangleRight(m_Canvas,m_Paint,x*3,y,width);
-            }
-        }
-        else
-        {
-            if(m_Direction ==  Direction.LEFT || m_Direction == Direction.RIGHT)
-            {
-                drawTriangleDown(m_Canvas,m_Paint,x,y,width);
-                drawTriangleUp(m_Canvas,m_Paint,x*3,y,width);
-            }
-            else
-            {
-                drawTriangleLeft(m_Canvas,m_Paint,x,y,width);
-                drawTriangleRight(m_Canvas,m_Paint,x*3,y,width);
-            }
-        }
-
-    }
-
-
-    //<editor-fold desc="Triangle Drawing">
-    public void drawTriangleUp(Canvas canvas, Paint m_Paint, int x, int y, int width) {
-        int halfWidth = width / 2;
-
-        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
-        Path path = new Path();
-        path.moveTo(x, y - halfWidth);
-        path.lineTo(x - halfWidth, y + halfWidth); 
-        path.lineTo(x + halfWidth, y + halfWidth);
-        path.lineTo(x, y - halfWidth); 
-        path.close();
-        canvas.drawPath(path, m_Paint);
-    }
-    public void drawTriangleDown(Canvas canvas, Paint m_Paint, int x, int y, int width) {
-        int halfWidth = width / 2;
-
-        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
-        Path path = new Path();
-        path.moveTo(x, y + halfWidth);
-        path.lineTo(x - halfWidth, y - halfWidth); 
-        path.lineTo(x + halfWidth, y - halfWidth);
-        path.lineTo(x, y + halfWidth); 
-        path.close();
-        canvas.drawPath(path, m_Paint);
-    }
-    public void drawTriangleLeft(Canvas canvas, Paint m_Paint, int x, int y, int width) {
-        int halfWidth = width / 2;
-
-        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
-        Path path = new Path();
-        path.moveTo(x - halfWidth, y);
-        path.lineTo(x + halfWidth, y + halfWidth); 
-        path.lineTo(x + halfWidth, y - halfWidth);
-        path.lineTo(x - halfWidth, y); 
-        path.close();
-        canvas.drawPath(path, m_Paint);
-    }
-    public void drawTriangleRight(Canvas canvas, Paint m_Paint, int x, int y, int width) {
-        int halfWidth = width / 2;
-
-        m_Paint.setColor(Color.argb(125,  0 , 0, 255));
-        Path path = new Path();
-        path.moveTo(x + halfWidth, y );
-        path.lineTo(x - halfWidth, y + halfWidth); 
-        path.lineTo(x - halfWidth, y - halfWidth);
-        path.lineTo(x + halfWidth, y); 
-        path.close();
-        canvas.drawPath(path, m_Paint);
-    }
     //</editor-fold>
 
 }
