@@ -1,12 +1,10 @@
 package com.asif.snake;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
 
 public class SettingActivity extends Activity {
 
@@ -17,18 +15,18 @@ public class SettingActivity extends Activity {
     Button controlButton;
     RadioButton povButton;
     RadioButton dualButton;
-
     Button soundButton;
     RadioButton soundOnButton;
     RadioButton soundOffButton;
-
     Boolean isSoundEnabled = true;
+    public SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        preferences = getSharedPreferences("SnakePreferences", Context.MODE_PRIVATE);
         m_Control = AppConstants.Control.DUAL;
         newGameButton = (Button) findViewById(R.id.newGameButton);
         controlButton = (Button) findViewById(R.id.controlButton);
@@ -63,6 +61,7 @@ public class SettingActivity extends Activity {
         });
         dualButton.toggle();
 
+        isSoundEnabled = preferences.getBoolean("IsSoundEnabled",true);
 
         soundButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -79,7 +78,9 @@ public class SettingActivity extends Activity {
                 soundOffRadioClicked();
             }
         });
-        soundOnButton.toggle();
+        soundOnButton.setChecked(isSoundEnabled);
+
+
     }
 
 
@@ -88,6 +89,10 @@ public class SettingActivity extends Activity {
 //        Intent myIntent = new Intent(CurrentActivity.this, NextActivity.class);
 //        myIntent.putExtra("key", value); //Optional parameters
 //        CurrentActivity.this.startActivity(myIntent);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("IsSoundEnabled", isSoundEnabled);
+        editor.apply();
 
         Intent myIntent = new Intent(SettingActivity.this, SnakeActivity.class);
         myIntent.putExtra(AppConstants.CONTROL_KEY,m_Control);
@@ -128,7 +133,7 @@ public class SettingActivity extends Activity {
     //endregion
 
 
-    //region control
+    //region Sound
     public void soundButtonClicked()
     {
         if(isSoundEnabled == false)

@@ -16,10 +16,10 @@ public class SnakeMovement {
         switch (m_Control)
         {
             case POV:
-                moveSnakePOV(motionEvent,m_Control,m_Direction,m_ScreenWidth);
+                m_Direction = moveSnakePOV(motionEvent,m_Control,m_Direction,m_ScreenWidth);
                 break;
             case DUAL:
-                moveSnakeDUAL(motionEvent,m_Control,m_Direction,m_ScreenWidth);
+                m_Direction = moveSnakeDUAL(motionEvent,m_Control,m_Direction,m_ScreenWidth);
                 break;
             case SPLIT:
             default:
@@ -102,6 +102,7 @@ public class SnakeMovement {
                     }
                 }
         }
+        m_Direction = m_Direction;
         return m_Direction;
     }
 }
