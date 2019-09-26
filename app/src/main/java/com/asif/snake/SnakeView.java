@@ -4,6 +4,7 @@ package com.asif.snake;
   Created by asif on 3-6-18.
  */
 
+import android.annotation.*;
 import android.content.*;
 import android.content.res.*;
 import android.graphics.*;
@@ -16,6 +17,7 @@ import com.asif.snake.SnakeHelper.*;
 import java.io.*;
 import java.util.*;
 
+@SuppressLint("ViewConstructor")
 public class SnakeView extends SurfaceView implements Runnable {
 
     // All the code will run separately to the UI
@@ -354,6 +356,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     //<editor-fold desc="Movement">
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
