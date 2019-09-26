@@ -291,9 +291,9 @@ public class SnakeView extends SurfaceView implements Runnable {
             // Clear the screen with my favorite color
             m_Canvas.drawColor(Color.argb(255, 0, 0, 0));
 
-
-            m_DrawControl.drawControl(m_Canvas,m_Control, m_Paint,m_ScreenWidth,m_ScreenHeight,m_BlockSize,m_Direction);
-
+            if(m_Control == Control.DUAL) {
+                m_DrawControl.drawControl(m_Canvas, m_Control, m_Paint, m_ScreenWidth, m_ScreenHeight, m_BlockSize, m_Direction);
+            }
 
             //Apple color
             m_Paint.setColor(Color.argb(255,  255, 0, 0));
