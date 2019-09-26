@@ -48,7 +48,7 @@ public class DrawControl {
 
 
     //<editor-fold desc="Triangle Drawing">
-    public void drawTriangleUp(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
+    private void drawTriangleUp(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
         int halfWidth = width / 2;
 
         m_Paint.setColor(android.graphics.Color.argb(125,  0 , 0, 255));
@@ -60,7 +60,7 @@ public class DrawControl {
         path.close();
         canvas.drawPath(path, m_Paint);
     }
-    public void drawTriangleDown(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
+    private void drawTriangleDown(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
         int halfWidth = width / 2;
 
         m_Paint.setColor(android.graphics.Color.argb(125,  0 , 0, 255));
@@ -72,7 +72,7 @@ public class DrawControl {
         path.close();
         canvas.drawPath(path, m_Paint);
     }
-    public void drawTriangleLeft(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
+    private void drawTriangleLeft(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
         int halfWidth = width / 2;
 
         m_Paint.setColor(android.graphics.Color.argb(125,  0 , 0, 255));
@@ -84,7 +84,7 @@ public class DrawControl {
         path.close();
         canvas.drawPath(path, m_Paint);
     }
-    public void drawTriangleRight(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
+    private void drawTriangleRight(android.graphics.Canvas canvas, android.graphics.Paint m_Paint, int x, int y, int width) {
         int halfWidth = width / 2;
 
         m_Paint.setColor(android.graphics.Color.argb(125,  0 , 0, 255));

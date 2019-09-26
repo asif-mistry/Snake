@@ -1,16 +1,16 @@
 package com.asif.snake;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.app.Activity;
-import android.graphics.Point;
-import android.os.Bundle;
-import android.view.Display;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.view.*;
 
 public class SnakeActivity extends Activity {
 
     // Declare an instance of SnakeView
     SnakeView snakeView;
+
     // We will initialize it in onCreate
     // once we have more details about the Player's device@Override
     protected void onCreate(Bundle savedInstanceState) {

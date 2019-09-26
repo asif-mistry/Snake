@@ -1,7 +1,7 @@
 package com.asif.snake;
 
-/**
- * Created by asif on 3-6-18.
+/*
+  Created by asif on 3-6-18.
  */
 
 import android.content.*;

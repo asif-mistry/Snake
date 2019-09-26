@@ -30,79 +30,68 @@ public class SnakeMovement {
 
     private AppConstants.Direction moveSnakePOV(MotionEvent motionEvent, AppConstants.Control m_Control, AppConstants.Direction m_Direction, int m_ScreenWidth)
     {
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= m_ScreenWidth / 2) {
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = AppConstants.Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            m_Direction = AppConstants.Direction.DOWN;
-                            break;
-                        case DOWN:
-                            m_Direction = AppConstants.Direction.LEFT;
-                            break;
-                        case LEFT:
-                            m_Direction = AppConstants.Direction.UP;
-                            break;
-                    }
-                } else {
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = AppConstants.Direction.LEFT;
-                            break;
-                        case LEFT:
-                            m_Direction = AppConstants.Direction.DOWN;
-                            break;
-                        case DOWN:
-                            m_Direction = AppConstants.Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            m_Direction = AppConstants.Direction.UP;
-                            break;
-                    }
+        if ((motionEvent.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+            if ((m_ScreenWidth / 2) < motionEvent.getX() ) {
+                switch (m_Direction) {
+                    case UP:
+                        m_Direction = AppConstants.Direction.RIGHT;
+                        break;
+                    case RIGHT:
+                        m_Direction = AppConstants.Direction.DOWN;
+                        break;
+                    case DOWN:
+                        m_Direction = AppConstants.Direction.LEFT;
+                        break;
+                    case LEFT:
+                        m_Direction = AppConstants.Direction.UP;
+                        break;
                 }
+            } else {
+                switch (m_Direction) {
+                    case UP:
+                        m_Direction = AppConstants.Direction.LEFT;
+                        break;
+                    case LEFT:
+                        m_Direction = AppConstants.Direction.DOWN;
+                        break;
+                    case DOWN:
+                        m_Direction = AppConstants.Direction.RIGHT;
+                        break;
+                    case RIGHT:
+                        m_Direction = AppConstants.Direction.UP;
+                        break;
+                }
+            }
         }
         return m_Direction;
     }
     private AppConstants.Direction moveSnakeDUAL(MotionEvent motionEvent, AppConstants.Control m_Control, AppConstants.Direction m_Direction, int m_ScreenWidth)
     {
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= m_ScreenWidth / 2) {//clicked on the right side
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = AppConstants.Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            m_Direction = AppConstants.Direction.UP;
-                            break;
-                        case DOWN:
-                            m_Direction = AppConstants.Direction.RIGHT;
-                            break;
-                        case LEFT:
-                            m_Direction = AppConstants.Direction.UP;
-                            break;
-                    }
-                } else {
-                    switch(m_Direction){
-                        case UP:
-                            m_Direction = AppConstants.Direction.LEFT;
-                            break;
-                        case LEFT:
-                            m_Direction = AppConstants.Direction.DOWN;
-                            break;
-                        case DOWN:
-                            m_Direction = AppConstants.Direction.LEFT;
-                            break;
-                        case RIGHT:
-                            m_Direction = AppConstants.Direction.DOWN;
-                            break;
-                    }
+        if ((motionEvent.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+            if (motionEvent.getX() >= m_ScreenWidth / 2) {//clicked on the right side
+                switch (m_Direction) {
+                    case UP:
+                    case DOWN:
+                        m_Direction = AppConstants.Direction.RIGHT;
+                        break;
+                    case RIGHT:
+                    case LEFT:
+                        m_Direction = AppConstants.Direction.UP;
+                        break;
                 }
+            } else {
+                switch (m_Direction) {
+                    case UP:
+                    case DOWN:
+                        m_Direction = AppConstants.Direction.LEFT;
+                        break;
+                    case LEFT:
+                    case RIGHT:
+                        m_Direction = AppConstants.Direction.DOWN;
+                        break;
+                }
+            }
         }
-        m_Direction = m_Direction;
         return m_Direction;
     }
 }
